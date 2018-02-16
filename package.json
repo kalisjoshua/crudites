@@ -1,0 +1,23 @@
+{
+  "name": "gttp-lambda",
+  "version": "0.1.0",
+  "description": "A boilerplate Lambda handler function for API Gateway proxy integrations; written in NodeJS",
+  "main": "src/index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^22.3.0"
+  },
+  "scripts": {
+    "start": "npm run test -- --coverage --watch",
+    "test": "jest ./src"
+  },
+  "keywords": [
+    "Node",
+    "NodeJS",
+    "AWS",
+    "Lambda",
+    "JS"
+  ],
+  "author": "Joshua T Kalis <kalisjoshua@gmail.com> (http://kalisjoshua.me)",
+  "license": "MIT"
+}
