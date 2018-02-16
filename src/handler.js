@@ -28,7 +28,7 @@ function handler(ev, context, callback) {
   }
 
   try {
-    getRoutes()[path][httpMethod](...requestArguments)
+    getRoutes(path, httpMethod)(...requestArguments)
       .then(respondWith, respondWith);
   } catch(e) {
     respondWith({statusCode: 404, body: "Not found."});

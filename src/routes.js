@@ -24,9 +24,19 @@ function routesFactory() {
     routes[path][method.toUpperCase()] = fn;
   }
 
+  function getRoutes(path, method) {
+    try {
+
+      return routes[path][method];
+    } catch (e) {
+
+      return false;
+    }
+  }
+
   return {
     addRoute,
-    getRoutes: () => routes
+    getRoutes
   };
 }
 

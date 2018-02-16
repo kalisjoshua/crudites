@@ -3,12 +3,14 @@ const {addRoute, handler} = require("./handler");
 function builder(resources) {
   // TODO: enable nested resources
   const api = resources
-    .reduce((acc, {methods, route}) => {
-      acc[route] = methods.map(method => {
-        addRoute(route, method.name, method);
+    .reduce((acc, config) => {
+      const {route} = config;
+      delete config.route;
 
-        return method.name;
-      });
+      acc[route] = Object.keys(config);
+
+      Object.keys(config)
+        .forEach(name => addRoute(route, name, config[name]));
 
       return acc;
     }, {});

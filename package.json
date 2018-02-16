@@ -1,6 +1,6 @@
 {
   "name": "gttp-lambda",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Create AWS Lambda functions for API Gateway proxy integrations with less pain.",
   "main": "src/index.js",
   "dependencies": {},

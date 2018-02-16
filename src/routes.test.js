@@ -8,7 +8,7 @@ describe("routesFactory", () => {
   it("should return a function to get all routes", () => {
     const {getRoutes} = routesFactory()
 
-    expect(getRoutes()).toMatchObject({})
+    expect(getRoutes()).toBe(false)
   })
 
   it("should return a function", () => {
@@ -25,7 +25,7 @@ describe("routesFactory", () => {
 
     const currentRoutes = getRoutes()
 
-    expect(currentRoutes["/books"]["GET"]()).toBe(rand)
+    expect(getRoutes("/books", "GET")()).toBe(rand)
   })
 
   it("should throw an error for a path value of `undefined`", () => {

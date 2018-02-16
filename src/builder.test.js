@@ -9,12 +9,10 @@ describe("builder", () => {
     const {api} = builder([
       {
         route: "/books",
-        methods: [
-          function GET() {
+        GET() {
 
-            return Promise.resolve({statusCode: 204})
-          }
-        ]
+          return Promise.resolve({statusCode: 204})
+        }
       }
     ])
 

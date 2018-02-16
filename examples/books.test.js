@@ -6,13 +6,11 @@ describe("/books", () => {
   })
 
   it("should define GET", () => {
-    const found = books.methods.map(i => i.name).includes("GET")
-
-    expect(found).toBe(true)
+    expect(books.GET).toBeTruthy()
   })
 
   it("should response with a promise for GET /books", (done) => {
-    books.methods[0]()
+    books.GET()
       .then(response => {
         expect(response.statusCode).toBe(204)
         done()
