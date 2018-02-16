@@ -1,7 +1,7 @@
 {
   "name": "gttp-lambda",
-  "version": "0.1.0",
-  "description": "A boilerplate Lambda handler function for API Gateway proxy integrations; written in NodeJS",
+  "version": "1.0.0",
+  "description": "Create AWS Lambda functions for API Gateway proxy integrations with less pain.",
   "main": "src/index.js",
   "dependencies": {},
   "devDependencies": {
@@ -9,12 +9,13 @@
   },
   "scripts": {
     "start": "npm run test -- --coverage --watch",
-    "test": "jest ./src"
+    "test": "jest ./src ./examples"
   },
   "keywords": [
     "Node",
     "NodeJS",
     "AWS",
+    "Amazon",
     "Lambda",
     "JS"
   ],
