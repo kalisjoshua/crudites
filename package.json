@@ -1,8 +1,9 @@
 {
-  "name": "gttp-lambda",
-  "version": "1.0.1",
+  "name": "crudites-lambda-framwork",
+  "version": "1.1.0",
   "description": "Create AWS Lambda functions for API Gateway proxy integrations with less pain.",
   "main": "src/index.js",
+  "repository": "git@github.com:kalisjoshua/crudite.git",
   "dependencies": {},
   "devDependencies": {
     "jest": "^22.3.0"
