@@ -3,7 +3,7 @@ const {parse : parseQS} = require("querystring");
 const parseHeaders = require("./headers");
 const routesFactory = require("./routes");
 
-const {addRoute, getRoutes} = routesFactory();
+const {addRoute, getRouteHandler} = routesFactory();
 
 function handler(ev, context, callback) {
   const {body, headers, httpMethod, path, queryStringParameters} = ev;
@@ -28,7 +28,7 @@ function handler(ev, context, callback) {
   }
 
   try {
-    getRoutes(path, httpMethod)(...requestArguments)
+    getRouteHandler(path, httpMethod)(...requestArguments)
       .then(respondWith, respondWith);
   } catch(e) {
     respondWith({statusCode: 404, body: "Not found."});
