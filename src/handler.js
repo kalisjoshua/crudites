@@ -1,41 +1,39 @@
-const {parse : parseQS} = require("querystring");
+const {parse: parseQS} = require('querystring')
 
-const parseHeaders = require("./headers");
-const routesFactory = require("./routes");
+const parseHeaders = require('./headers')
+const routesFactory = require('./routes')
 
-const {addRoute, getRouteHandler} = routesFactory();
+const {addRoute, getRouteHandler} = routesFactory()
 
-function handler(ev, context, callback) {
-  const {body, headers, httpMethod, path, queryStringParameters} = ev;
+function handler (ev, context, callback) {
+  const {body, headers, httpMethod, path, queryStringParameters} = ev
 
   const respondWith = ({body, headers = {}, statusCode}) =>
     callback(null, body
       ? {headers, statusCode, body}
-      : {headers, statusCode});
+      : {headers, statusCode})
 
   const requestArguments = [
     body,
     parseQS(queryStringParameters)
-  ];
+  ]
 
   try {
     requestArguments
-      .push(parseHeaders(headers));
+      .push(parseHeaders(headers))
   } catch (e) {
-    respondWith({statusCode: 400, body: "Unparsable headers."});
+    respondWith({statusCode: 400, body: 'Unparsable headers.'})
 
-    return;
+    return
   }
 
   try {
     getRouteHandler(path, httpMethod)(...requestArguments)
-      .then(respondWith, respondWith);
-  } catch(e) {
-    respondWith({statusCode: 404, body: "Not found."});
-
-    return;
+      .then(respondWith, respondWith)
+  } catch (e) {
+    respondWith({statusCode: 404, body: 'Not found.'})
   }
 }
 
-exports.addRoute = addRoute;
-exports.handler = handler;
+exports.addRoute = addRoute
+exports.handler = handler

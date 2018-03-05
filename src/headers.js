@@ -1,8 +1,8 @@
-const parseHeaders = (str = "") => str
+const parseHeaders = (str = '') => str
   .split(/\n/)
   .map(x => x.split(/\s*:\s*/))
   .reduce((a, [k, v]) => k && v
     ? {...a, [k.trim()]: v.trim()}
-    : a, {});
+    : a, {})
 
-module.exports = parseHeaders;
+module.exports = parseHeaders

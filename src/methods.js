@@ -1,11 +1,11 @@
 module.exports = [
-  "CONNECT",
-  "DELETE",
-  "GET",
-  "HEAD",
-  "OPTIONS",
-  "PATCH",
-  "POST",
-  "PUT",
-  "TRACE"
-];
+  'CONNECT',
+  'DELETE',
+  'GET',
+  'HEAD',
+  'OPTIONS',
+  'PATCH',
+  'POST',
+  'PUT',
+  'TRACE'
+]

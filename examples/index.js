@@ -1,5 +1,5 @@
-const builder = require("../src");
+const builder = require('../src')
 
 module.exports = builder([
-  "./books",
-].map(m => require(m)));
+  './books'
+].map(m => require(m)))

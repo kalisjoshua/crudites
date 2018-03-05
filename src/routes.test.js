@@ -1,94 +1,94 @@
-const routesFactory = require("./routes")
+const routesFactory = require('./routes')
 
-describe("routesFactory", () => {
-  it("should be a function", () => {
+describe('routesFactory', () => {
+  it('should be a function', () => {
     expect(routesFactory()).toBeTruthy()
   })
 
-  it("should return a function to get all routes", () => {
+  it('should return a function to get all routes', () => {
     const {getRouteHandler} = routesFactory()
 
     expect(getRouteHandler()).toBe(false)
   })
 
-  it("should return a function", () => {
+  it('should return a function', () => {
     const {addRoute} = routesFactory()
 
-    expect(typeof addRoute).toBe("function")
+    expect(typeof addRoute).toBe('function')
   })
 
-  it("should allow adding routes", () => {
+  it('should allow adding routes', () => {
     const {addRoute, getRouteHandler} = routesFactory()
 
     const rand = Math.random().toString(36).slice(2)
-    addRoute("/books", "GET", () => rand)
+    addRoute('/books', 'GET', () => rand)
 
-    expect(getRouteHandler("/books", "GET")()).toBe(rand)
+    expect(getRouteHandler('/books', 'GET')()).toBe(rand)
   })
 
-  it("should throw an error for a path value of `undefined`", () => {
+  it('should throw an error for a path value of `undefined`', () => {
     const {addRoute} = routesFactory()
 
     expect(function () {
       addRoute()
-    }).toThrow("Path must be a String, or RegExp; undefined provided (undefined).")
+    }).toThrow('Path must be a String, or RegExp; undefined provided (undefined).')
   })
 
-  it("should throw an error for a path value of `1234`", () => {
+  it('should throw an error for a path value of `1234`', () => {
     const {addRoute} = routesFactory()
 
     expect(function () {
       addRoute(1234)
-    }).toThrow("Path must be a String, or RegExp; number provided (1234).")
+    }).toThrow('Path must be a String, or RegExp; number provided (1234).')
   })
 
-  it("should throw an error for a method value of `undefined`", () => {
+  it('should throw an error for a method value of `undefined`', () => {
     const {addRoute} = routesFactory()
 
     expect(function () {
-      addRoute("/books")
-    }).toThrow("Invalid HTTP method: undefined.")
+      addRoute('/books')
+    }).toThrow('Invalid HTTP method: undefined.')
   })
 
-  it("should throw an error for a method value of `1234`", () => {
+  it('should throw an error for a method value of `1234`', () => {
     const {addRoute} = routesFactory()
 
     expect(function () {
-      addRoute("/books", 1234)
-    }).toThrow("Invalid HTTP method: 1234.")
+      addRoute('/books', 1234)
+    }).toThrow('Invalid HTTP method: 1234.')
   })
 
-  it("should throw an error for a method value of `teapot`", () => {
+  it('should throw an error for a method value of `teapot`', () => {
     const {addRoute} = routesFactory()
 
     expect(function () {
-      addRoute("/books", "teapot")
-    }).toThrow("Invalid HTTP method: teapot.")
+      addRoute('/books', 'teapot')
+    }).toThrow('Invalid HTTP method: teapot.')
   })
 
-  it("should throw an error for a handler-function value of `undefined`", () => {
+  it('should throw an error for a handler-function value of `undefined`', () => {
     const {addRoute} = routesFactory()
 
     expect(function () {
-      addRoute("/books", "get")
-    }).toThrow("Route handlers must be a Function; undefined provided (undefined).")
+      addRoute('/books', 'get')
+    }).toThrow('Route handlers must be a Function; undefined provided (undefined).')
   })
 
-  it("should throw an error for a handler-function value of `1234`", () => {
+  it('should throw an error for a handler-function value of `1234`', () => {
     const {addRoute} = routesFactory()
 
     expect(function () {
-      addRoute("/books", "get", 1234)
-    }).toThrow("Route handlers must be a Function; number provided (1234).")
+      addRoute('/books', 'get', 1234)
+    }).toThrow('Route handlers must be a Function; number provided (1234).')
   })
-  
-  it("should allow for RegExp matching of paths", () => {
+
+  it('should allow for RegExp matching of paths', () => {
     const {addRoute, getRouteHandler} = routesFactory()
-    const str = "COCO"
-    
-    addRoute(/film|movie/, "GET", () => str)
-    
-    expect(getRouteHandler("/film", "GET")()).toBe(str)
-    expect(getRouteHandler("/movie", "GET")()).toBe(str)
+    const str = 'COCO'
+
+    addRoute(/film|movie/, 'GET', () => str)
+
+    expect(getRouteHandler('/film', 'GET')()).toBe(str)
+    expect(getRouteHandler('/movie', 'GET')()).toBe(str)
   })
 })
