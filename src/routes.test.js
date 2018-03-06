@@ -31,7 +31,7 @@ describe('routesFactory', () => {
 
     expect(function () {
       addRoute()
-    }).toThrow('Path must be a String, or RegExp; undefined provided (undefined).')
+    }).toThrow('Path must be a String; undefined provided (undefined).')
   })
 
   it('should throw an error for a path value of `1234`', () => {
@@ -39,7 +39,7 @@ describe('routesFactory', () => {
 
     expect(function () {
       addRoute(1234)
-    }).toThrow('Path must be a String, or RegExp; number provided (1234).')
+    }).toThrow('Path must be a String; number provided (1234).')
   })
 
   it('should throw an error for a method value of `undefined`', () => {
@@ -80,15 +80,5 @@ describe('routesFactory', () => {
     expect(function () {
       addRoute('/books', 'get', 1234)
     }).toThrow('Route handlers must be a Function; number provided (1234).')
-  })
-
-  it('should allow for RegExp matching of paths', () => {
-    const {addRoute, getRouteHandler} = routesFactory()
-    const str = 'COCO'
-
-    addRoute(/film|movie/, 'GET', () => str)
-
-    expect(getRouteHandler('/film', 'GET')()).toBe(str)
-    expect(getRouteHandler('/movie', 'GET')()).toBe(str)
   })
 })
