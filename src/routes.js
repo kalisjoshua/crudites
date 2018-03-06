@@ -35,18 +35,22 @@ function routesFactory () {
   }
 
   function getRouteHandler (path, method) {
+    let result
+
     try {
-      return routes[path][method]
+      result = routes[path][method]
     } catch (pathDoesNotMatchAnyRegisteredStringPathsError) {
       try {
-        const foundHandler = matchers[0][1]
-          .filter(([m, _]) => m(path, method))
+        const foundHandler = matchers
+          .filter(([m]) => m(path, method))[0][1]
 
-        return foundHandler
+        result = foundHandler
       } catch (noRegisteredMatchersMatchThePathError) {
-        return false
+        result = false
       }
     }
+
+    return result
   }
 
   return {
