@@ -1,5 +1,5 @@
 {
-  "name": "crudites-lambda-framwork",
+  "name": "@quickenloans/crudites-lambda-framwork",
   "version": "1.1.0",
   "description": "Create AWS Lambda functions for API Gateway proxy integrations with less pain.",
   "main": "src/index.js",
@@ -22,10 +22,11 @@
   "keywords": [
     "Node",
     "NodeJS",
+    "JavaScript",
+    "JS",
     "AWS",
     "Amazon",
-    "Lambda",
-    "JS"
+    "Lambda"
   ],
   "author": "Joshua T Kalis <kalisjoshua@gmail.com> (http://kalisjoshua.me)",
   "license": "MIT"
