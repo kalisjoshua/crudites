@@ -12,7 +12,7 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
-    "jest": "^22.3.0"
+    "jest": "^22.4.4"
   },
   "scripts": {
     "lint": "eslint ./examples ./src",
@@ -29,5 +29,9 @@
     "Lambda"
   ],
   "author": "Joshua T Kalis <kalisjoshua@gmail.com> (http://kalisjoshua.me)",
-  "license": "MIT"
+  "license": "MIT",
+  "jest": {
+    "verbose": true,
+    "testURL": "http://localhost/"
+  }
 }

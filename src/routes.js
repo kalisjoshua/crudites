@@ -1,14 +1,23 @@
+const endpoint = require('./endpoint')
 const {isFunction, isString} = require('./is')
-
 const methods = require('./methods')
 
+class ClientError extends Error {
+  constructor (statusCode, message) {
+    super()
+
+    this.message = message
+    this.statusCode = statusCode
+  }
+}
+
 function routesFactory () {
+  const patterns = []
   const routes = {}
 
-  function addRoute (path, method, fn) {
-    // TODO: enable URL parameters - e.g. /books/1234
-    if (!isString(path)) {
-      throw new Error(`Path must be a String; ${typeof path} provided (${path}).`)
+  function addRoute (template, method, fn) {
+    if (!isString(template)) {
+      throw new Error(`Template must be a String; ${typeof template} provided (${template}).`)
     }
 
     if (!method || !isString(method) || !methods.includes(method.toUpperCase())) {
@@ -19,20 +28,42 @@ function routesFactory () {
       throw new Error(`Route handlers must be a Function; ${typeof fn} provided (${fn}).`)
     }
 
-    routes[path] = routes[path] || {}
-    routes[path][method.toUpperCase()] = fn
+    routes[template] = routes[template] || {}
+    routes[template][method.toUpperCase()] = fn
+
+    if (/\{/.test(template)) {
+      patterns.push({
+        matcher: endpoint(template).match,
+        route: routes[template]
+      })
+    }
   }
 
-  function getRouteHandler (path, method) {
-    let result
+  function getRouteHandler (request, originalEvent) {
+    const {method, uri: {path}} = request
 
-    try {
-      result = routes[path][method]
-    } catch (pathDoesNotMatchAnyRegisteredStringPathsError) {
-      result = false
+    let found = routes[path]
+
+    if (!found) {
+      found = patterns
+        .reduce((acc, {matcher, route}) => {
+          if (acc) return acc
+
+          const match = matcher(path)
+
+          request.uri.parameters = match || {}
+
+          return match && route
+        }, false)
     }
 
-    return result
+    if (!found) {
+      throw new ClientError(404, 'Not found.')
+    } else if (!found[method]) {
+      throw new ClientError(405, 'Method not allowed.')
+    } else {
+      return found[method](request, originalEvent)
+    }
   }
 
   return {

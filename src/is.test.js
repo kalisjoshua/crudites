@@ -1,4 +1,4 @@
-const {isArray, isFunction, isRegExp, isString} = require('./is')
+const {isArray, isFunction, isObject, isRegExp, isString} = require('./is')
 
 describe('Library: is', () => {
   describe('isArray', () => {
@@ -18,6 +18,16 @@ describe('Library: is', () => {
 
     it('should return false', () => {
       expect(isFunction()).toBe(false)
+    })
+  })
+
+  describe('isObject', () => {
+    it('should be a function', () => {
+      expect(isObject({hello: 'world'})).toBe(true)
+    })
+
+    it('should return false', () => {
+      expect(isObject()).toBe(false)
     })
   })
 

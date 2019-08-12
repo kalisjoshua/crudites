@@ -1,58 +1,56 @@
-const rParam = /^\{([^:}]+?)(?::(\w+?))?\}$/
-
 const parsers = {
-  number: val => !isNaN(parseFloat(val)) && isFinite(val),
+  number: val => !isNaN(parseFloat(val)) && isFinite(val) && Number(val),
   string: x => x
 }
 
-function endpointPatternFactory (pattern) {
-  const parts = part(pattern)
+const rTemplate = /^\/?((?:(?:[^/{}]+?|\{[^}]+?\})\/?)+)$/
+const rParam = /\{([^}]+?)\}/g
+const toRegExp = (template) =>
+  new RegExp(`^${template.replace(rParam, '([^\\/]+)')}$`)
 
-  return {
-    isMatch: (path) => matcher(parts, path),
-    parts: () => parts,
-    pattern
-  }
-}
-
-function matcher (pattern, path) {
-  const pathParts = path
-    .split('/')
-    .filter(x => x)
-
-  return pattern
-    .every((x, i) => x.isParam
-      ? parsers[x.type](pathParts[i])
-      : x === pathParts[i])
-}
-
-function parameter (str) {
-  if (!rParam.test(str)) {
+function endpointFactory (template) {
+  if (!rTemplate.test(template)) {
     throw new Error('URL parameters need to be formatted correctly.')
   }
 
-  const [name, type = 'string'] = str
-    .match(rParam)
-    .slice(1)
+  const invalidTypes = (template.match(/(?<=:)[^}]+?(?=\})/g) || [])
+    .filter((t) => !(t in parsers))
 
-  if (!(type in parsers)) {
-    throw new Error(`Type "${type}" is not an available parameter type.`)
+  if (invalidTypes.length) {
+    throw new Error(`Unsupported parameter types: [${invalidTypes.join()}]`)
   }
 
-  return new URLParameter(name, type)
+  return {
+    match (uri) {
+      if (template === uri) {
+        return true
+      }
+
+      const found = uri.match(toRegExp(template))
+
+      if (!found) {
+        return false
+      }
+
+      return parse(template, found.slice(1))
+    },
+    template
+  }
 }
 
-function part (pattern) {
-  return pattern
-    .split('/')
-    .filter(x => x)
-    .map(sect => /^{/.test(sect) ? parameter(sect) : sect)
+function parse (template, matches) {
+  return template
+    .match(rParam)
+    .reduce((acc, param, index) => {
+      const [name, type = 'string'] = param
+        .replace(rParam, '$1')
+        .split(':')
+
+      return {
+        ...acc,
+        [name]: parsers[type](matches[index])
+      }
+    }, {})
 }
 
-function URLParameter (name, type) {
-  this.name = name.trim()
-  this.type = type.trim()
-}
-URLParameter.prototype.isParam = true
-
-module.exports = endpointPatternFactory
+module.exports = endpointFactory

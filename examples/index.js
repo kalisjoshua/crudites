@@ -1,5 +1,4 @@
-const builder = require('../src')
+const crudites = require('../src')
 
-module.exports = builder([
-  './books'
-].map(m => require(m)))
+// This file should be completely unnecessary with a completed CLI
+module.exports = crudites('./examples/api-resources')

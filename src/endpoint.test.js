@@ -1,79 +1,63 @@
 const endpointFactory = require('./endpoint')
 
 describe('Endpoint', () => {
-  it('should construct simple endpoints', () => {
+  describe('plain endpoints', () => {
     const endpoint = endpointFactory('/home')
 
-    expect(endpoint.pattern).toEqual('/home')
+    it('should match paths that fit the simple pattern', () => {
+      expect(endpoint.match('/home')).toBe(true)
+    })
+
+    it('should not match paths that do not fit the simple pattern', () => {
+      expect(endpoint.match('/away')).toBe(false)
+    })
   })
 
-  it('should match paths that fit the simple pattern', () => {
-    const endpoint = endpointFactory('/home')
+  describe('endpoints with untyped URI parameters', () => {
+    const template = '/article/{year}/{month}/{day}'
+    const uri = '/article/2018/January/01'
 
-    expect(endpoint.isMatch('/home')).toBe(true)
-    expect(endpoint.isMatch('/away')).toBe(false)
+    const match = {
+      day: '01',
+      month: 'January',
+      year: '2018'
+    }
+
+    const endpoint = endpointFactory(template)
+
+    it('should match endpoints with untyped parameters', () => {
+      expect(endpoint.match(uri)).toEqual(match)
+    })
   })
 
-  it('should construct complex endpoints', () => {
-    const pattern = '/article/{year:number}/{month:number}/{day:number}'
-    const endpoint = endpointFactory(pattern)
+  describe('endpoints with typed URI parameters', () => {
+    const template = '/article/{year:number}/{month:string}/{day:number}'
+    const uri = '/article/2018/January/01'
 
-    expect(endpoint.pattern).toBe(pattern)
-  })
+    const match = {
+      day: 1,
+      month: 'January',
+      year: 2018
+    }
 
-  it('should parse path parts', () => {
-    const pattern = '/article/{year:number}/{month:number}/{day:number}'
-    const endpoint = endpointFactory(pattern)
+    const endpoint = endpointFactory(template)
 
-    expect(endpoint.parts()).toEqual([
-      'article',
-      {
-        name: 'year',
-        type: 'number'
-      },
-      {
-        name: 'month',
-        type: 'number'
-      },
-      {
-        name: 'day',
-        type: 'number'
-      }
-    ])
-  })
-
-  it('should match endpoints with named untyped parameter parts', () => {
-    const pattern = '/article/{year}/{month}/{day}'
-    const endpoint = endpointFactory(pattern)
-
-    expect(endpoint.isMatch('/article/2018/01/01')).toBe(true)
-  })
-
-  it('should match endpoints with named "number" typed parameter parts', () => {
-    const pattern = '/article/{year:number}/{month:number}/{day:number}'
-    const endpoint = endpointFactory(pattern)
-
-    expect(endpoint.isMatch('/article/2018/01/01')).toBe(true)
-  })
-
-  it('should match endpoints with named "string" typed parameter parts', () => {
-    const pattern = '/article/{title:string}'
-    const endpoint = endpointFactory(pattern)
-
-    expect(endpoint.isMatch('/article/kinda-long-article-title')).toBe(true)
+    it('should match endpoints with typed parameters', () => {
+      expect(endpoint.match(uri)).toEqual(match)
+    })
   })
 
   it('should throw for poorly formatted URLs', () => {
-    const pattern = '/article/{'
+    const template = '/article/{'
 
-    expect(() => endpointFactory(pattern))
+    expect(() => endpointFactory(template))
       .toThrow('URL parameters need to be formatted correctly.')
   })
 
   it('should throw for invalid endpoint parameter type', () => {
-    const pattern = '/article/{title:awesome}'
+    const template = '/article/{title:awesome}'
 
-    expect(() => endpointFactory(pattern))
-      .toThrow('Type "awesome" is not an available parameter type.')
+    expect(() => endpointFactory(template))
+      .toThrow('Unsupported parameter types: [awesome]')
   })
 })

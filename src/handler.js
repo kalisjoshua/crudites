@@ -13,27 +13,43 @@ function handler (ev, context, callback) {
       ? {headers, statusCode, body}
       : {headers, statusCode})
 
-  const requestArguments = [
+  const requestArguments = {
     body,
-    parseQS(queryStringParameters)
-  ]
+    method: httpMethod,
+    uri: {
+      path: (path || '').replace(/\?.*/, ''),
+      search: parseQS(queryStringParameters),
+    },
+  }
 
   try {
-    requestArguments
-      .push(parseHeaders(headers))
+    requestArguments.headers = parseHeaders(headers)
   } catch (e) {
     respondWith({statusCode: 400, body: 'Unparsable headers.'})
 
     return
   }
 
+  let pending
+
   try {
-    getRouteHandler(path, httpMethod)(...requestArguments)
-      .then(respondWith, respondWith)
+    pending = getRouteHandler(requestArguments, ev)
   } catch (e) {
-    respondWith({statusCode: 404, body: 'Not found.'})
+    const {message: body, statusCode} = e
+
+    respondWith({body, statusCode})
+
+    return
+  }
+
+  if (pending.then) {
+    pending.then(respondWith, respondWith)
+  } else {
+    respondWith(pending)
   }
 }
 
-exports.addRoute = addRoute
-exports.handler = handler
+module.exports = {
+  addRoute,
+  handler
+}

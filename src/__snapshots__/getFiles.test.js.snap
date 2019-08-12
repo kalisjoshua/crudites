@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getFiles should read from a mock filesystem 1`] = `
+"[
+    {
+        \\"route\\": \\"/Users/jkalis/Pro/cruditès-lambda-framwork/resources/books/collection.js\\",
+        \\"content\\": \\"// source code comment for collection.js\\"
+    },
+    {
+        \\"route\\": \\"/Users/jkalis/Pro/cruditès-lambda-framwork/resources/books/collection.test.js\\",
+        \\"content\\": \\"// some tests for the module\\"
+    },
+    {
+        \\"route\\": \\"/Users/jkalis/Pro/cruditès-lambda-framwork/resources/README.md\\",
+        \\"content\\": \\"# Resources Readme\\"
+    }
+]"
+`;

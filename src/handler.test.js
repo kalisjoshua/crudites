@@ -29,7 +29,7 @@ describe('handler', () => {
       httpMethod: 'GET'
     }
 
-    addRoute(ev.path, ev.httpMethod, (body, qs, headers) =>
+    addRoute(ev.path, ev.httpMethod, () =>
       Promise.resolve({statusCode: 200, body: 'Books'}))
 
     handler(ev, {}, (_, response) => {
@@ -46,7 +46,7 @@ describe('handler', () => {
       httpMethod: 'PUT'
     }
 
-    addRoute(ev.path, ev.httpMethod, (body, qs, headers) =>
+    addRoute(ev.path, ev.httpMethod, () =>
       Promise.resolve({statusCode: 204}))
 
     handler(ev, {}, (_, response) => {
@@ -64,7 +64,7 @@ describe('handler', () => {
       httpMethod: 'GET'
     }
 
-    addRoute(ev.path, ev.httpMethod, (body, qs, headers) =>
+    addRoute(ev.path, ev.httpMethod, () =>
       // eslint-disable-next-line prefer-promise-reject-errors
       Promise.reject({statusCode: 403}))
 
